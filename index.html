@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Hadiya 💗</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        html, body { 
+            height: 100%; width: 100%; background: #000;
+            overflow: hidden; touch-action: none; position: fixed;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        /* FLOWER SHOWER */
+        .petals-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+        .petal { position: absolute; font-size: 20px; animation: fall linear infinite; opacity: 0.8; }
+        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; } 10% { opacity: 0.8; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+        /* INTENSIFIED PAGE MANAGER */
+        .page { 
+            position: absolute; top: 0; left: 0;
+            height: 100vh; width: 100vw; 
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; text-align: center; 
+            color: white; padding: 20px; 
+            opacity: 0; visibility: hidden;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s;
+            z-index: 10;
+        }
+        .page.active { opacity: 1; visibility: visible; z-index: 20; }
+
+        .bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; z-index: 0; animation: zoomEffect 20s infinite alternate; }
+        @keyframes zoomEffect { from { transform: scale(1); } to { transform: scale(1.15); } }
+        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.55); z-index: 1; }
+        
+        /* THE CONTENT POP EFFECT */
+        .content { 
+            position: relative; z-index: 30; background: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            padding: 35px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.3); 
+            max-width: 85%;
+            /* Start state for animation */
+            opacity: 0; transform: translateY(100px) scale(0.8);
+            transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        /* End state when active */
+        .page.active .content { opacity: 1; transform: translateY(0) scale(1); }
+
+        /* MUSIC PLAYER */
+        .music-container { position: fixed; bottom: 30px; right: 25px; z-index: 1000; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        #music-hint { background: rgba(255, 255, 255, 0.9); color: #ff80ab; padding: 6px 14px; border-radius: 15px; font-size: 0.85rem; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); animation: bounce 2s infinite; transition: opacity 0.5s; }
+        #music-btn { background: rgba(255, 128, 171, 0.4); border: 2px solid white; border-radius: 50%; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 26px; box-shadow: 0 4px 15px rgba(255, 128, 171, 0.5); }
+        .spinning { animation: rotate 4s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+        /* ENVELOPE & SEAL */
+        .envelope-wrapper { position: relative; width: 220px; height: 150px; margin: 40px auto; z-index: 40; }
+        .envelope-container { position: absolute; width: 100%; height: 100%; perspective: 1000px; cursor: pointer; }
+        .envelope-front { position: absolute; bottom: 0; width: 100%; height: 100%; background: #fff; border-radius: 5px; z-index: 10; clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0, 50% 50%); border: 1px solid #eee; }
+        .envelope-back { position: absolute; bottom: 0; width: 100%; height: 100%; background: #f9f9f9; border-radius: 5px; z-index: 1; }
+        .flap { position: absolute; top: 0; width: 100%; height: 100%; background: #f0f0f0; clip-path: polygon(0 0, 100% 0, 50% 50%); transition: transform 0.8s ease; transform-origin: top; z-index: 15; }
+        .seal { position: absolute; top: 55px; left: 50%; transform: translateX(-50%); font-size: 35px; z-index: 50; transition: all 0.6s ease; pointer-events: none; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2)); }
+        .letter { position: absolute; bottom: 10px; left: -30px; background: white; color: #444; padding: 25px; font-size: 1rem; border-radius: 5px; transition: 0.8s; z-index: 5; opacity: 0; width: 280px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); text-align: center; line-height: 1.5; }
+        .opened .flap { transform: rotateX(180deg); z-index: 0; }
+        .opened .seal { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+        .opened .letter { transform: translateY(-170px); opacity: 1; z-index: 60; }
+
+        h1 { font-family: 'Dancing Script', cursive; font-size: 2.8rem; margin-bottom: 12px; }
+        .btn { margin-top: 25px; padding: 14px 40px; background: #ff80ab; color: white; border-radius: 50px; border:none; font-weight: bold; cursor: pointer; font-size: 1rem; box-shadow: 0 5px 15px rgba(255, 128, 171, 0.4); transition: transform 0.3s; }
+        .btn:active { transform: scale(0.9); }
+
+        #p1 .bg-layer { background-image: url('1.jpg'); }
+        #p2 .bg-layer { background-image: url('2.jpg'); }
+        #p3 .bg-layer { background-image: url('3.jpg'); }
+        #p4 .bg-layer { background-image: url('4.jpg'); }
+        #p5 .bg-layer { background-image: url('5.jpg'); }
+    </style>
+</head>
+<body>
+
+    <audio id="myAudio" loop><source src="music.mp3" type="audio/mpeg"></audio>
+    <div class="music-container">
+        <div id="music-hint">Tap for music! ✨</div>
+        <div id="music-btn" onclick="toggleMusic()">🧸</div>
+    </div>
+
+    <div class="petals-container" id="petals"></div>
+
+    <section class="page active" id="p1"><div class="bg-layer"></div><div class="overlay"></div><div class="content"><h1>Hi Hadiya!</h1><p>Ready for a Teddy Day surprise? 🐾</p><button class="btn" onclick="nextPage(2)">Explore →</button></div></section>
+    <section class="page" id="p2"><div class="bg-layer"></div><div class="overlay"></div><div class="content"><h1>Soft & Sweet</h1><p>You're the person who makes every moment feel like a warm hug.</p><button class="btn" onclick="nextPage(3)">Continue</button></div></section>
+    <section class="page" id="p3"><div class="bg-layer"></div><div class="overlay"></div><div class="content"><h1>My Favorite View</h1><p>If I had a flower for every time you made me smile, I’d have a garden to walk in forever. 🌸</p><button class="btn" onclick="nextPage(4)">Continue</button></div></section>
+    <section class="page" id="p4"><div class="bg-layer"></div><div class="overlay"></div><div class="content"><h1>My Promise</h1><p>I'll always be your listener and your safe place. Always.</p><button class="btn" onclick="nextPage(5)">Open Your Letter</button></div></section>
+    <section class="page" id="p5">
+        <div class="bg-layer"></div><div class="overlay"></div>
+        <div class="content">
+            <h1>Happy Teddy Day!</h1>
+            <div class="envelope-wrapper">
+                <div class="envelope-container" onclick="this.parentElement.classList.toggle('opened')">
+                    <div class="flap"></div><div class="envelope-back"></div>
+                    <div class="letter">"Who said teddy's aren't real I mean just look at you!! You are the most adorable teddy, my love!"</div>
+                    <div class="envelope-front"></div>
+                </div>
+                <div class="seal">🌸</div>
+            </div>
+            <button class="btn" style="background:transparent; border:1px solid white;" onclick="nextPage(1)">Replay ❤️</button>
+        </div>
+    </section>
+
+    <script>
+        const audio = document.getElementById("myAudio");
+        const hint = document.getElementById("music-hint");
+
+        function nextPage(index) {
+            // Intensified stagger: current page fades out, new one waits slightly then rises
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            setTimeout(() => {
+                document.getElementById('p' + index).classList.add('active');
+            }, 100); 
+        }
+
+        function toggleMusic() {
+            const btn = document.getElementById("music-btn");
+            if (audio.paused) { audio.play(); btn.classList.add("spinning"); btn.innerHTML = "🎶"; hint.style.opacity = "0"; } 
+            else { audio.pause(); btn.classList.remove("spinning"); btn.innerHTML = "🧸"; hint.style.opacity = "1"; }
+        }
+
+        function initPetals() {
+            const container = document.getElementById("petals");
+            for (let i = 0; i < 20; i++) {
+                const p = document.createElement('div');
+                p.className = 'petal'; p.innerHTML = "🌸";
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (Math.random() * 5 + 7) + 's';
+                p.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(p);
+            }
+        }
+        initPetals();
+
+        function createHeart(x, y) {
+            const h = document.createElement('div');
+            h.style.position = 'fixed'; h.style.left = x + 'px'; h.style.top = y + 'px';
+            h.innerHTML = '💗'; h.style.fontSize = '24px'; h.style.pointerEvents = 'none'; h.style.zIndex = '9999';
+            h.animate([{opacity: 1, transform: 'scale(1)'}, {opacity: 0, transform: 'scale(2) translateY(-30px)'}], {duration: 800, fill: 'forwards'});
+            document.body.appendChild(h); setTimeout(() => h.remove(), 800);
+        }
+        document.addEventListener('mousemove', (e) => createHeart(e.clientX, e.clientY));
+        document.addEventListener('touchmove', (e) => createHeart(e.touches[0].clientX, e.touches[0].clientY));
+    </script>
+</body>
+</html>
